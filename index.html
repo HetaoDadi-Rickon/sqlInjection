@@ -12,29 +12,31 @@
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-    <script type="text/javascript">
-        function Lock() {
-            console.log('test');
-            var form_data = new FormData();
-            form_data.append("id", '1');
-            form_data.append("state", '1');
-            $.ajax({
-                type: "POST",
-                url: "http://47.98.154.252:8282/api/Device/doorControl",
-                dataType : "json",
-                processData: false,  // 注意：让jQuery不要处理数据
-                contentType: false,  // 注意：让jQuery不要设置contentType
-                data: form_data
-            }).success(function(msg) {
-                console.log(msg);
-                if (msg.status == 0){
-                    alert('开锁成功');
-                }
-            }).fail(function(msg) {
-                alert("连接失败");
-                console.log(msg);
+    <script>
+        console.log('test');
+        $(document).ready(function(){
+            $("#button").click(function(){
+                var content = $("#input").val();
+                console.log(content);
+                $.post("post.php",{
+                        input:content,
+                    },
+                    function(data,status){
+                        if (status != 'success') {
+                            alert("请求失败请重试");
+                        } else {
+                            var resutl = data['data'];
+                            console.log(resutl.length);
+                            for (var i = 0 ;i < resutl.length;i ++) {
+                                console.log(resutl[i]);
+                                var str = "<pre>ID: " + resutl[i]['id'] + "<br />NAME: " + resutl[i]['name'] + "<br />PW: " + resutl[i]['password'] + "</pre>";
+                                $("#pre").append(str);
+                            }
+                            console.log(data['data']);
+                        }
+                    });
             });
-        }
+        });
     </script>
 </head>
 <body>
@@ -44,27 +46,13 @@
 <div style="text-align: center;background-color: #fff;border-radius: 20px;width: 480px;height: 480px;margin: auto;
     position: absolute;top: 0;left: 0;right: 0;bottom: 0;">
     <div class="jumbotron" role="group" aria-label="...">
-        <!--<div class="jumbotron">-->
-        <!--<input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">-->
-        <!--<p><a class="btn btn-primary btn-lg" href="#" role="button">提交</a></p>-->
-        <!--</div>-->
-        <!--<form action="">-->
-            <!--<br>-->
-            <!--BH:-->
-            <!--<input class="form-control" type="text" name="lastname">-->
-            <!--<br><br>-->
-            <!--<input type="submit" value="Submit">-->
-        <!--</form>-->
-        <form action="#" method="GET">
-            <p>
-                BH:
-                <input type="text" size="15" name="id">
-                <input type="submit" name="Submit" value="提交">
-            </p>
-            <input type='hidden' name='user_token' value='7d303be71cd72d0cbebca78dca711eaa' />
-        </form>
-        <div>
-            <pre>ID: 1<br />First name: admin<br />Surname: admin</pre>
+        <p>
+            BH:
+            <input type="text" size="15" id="input">
+            <input type="submit" id="button" value="提交">
+        </p>
+        <br>
+        <div id="pre">
         </div>
     </div>
 
