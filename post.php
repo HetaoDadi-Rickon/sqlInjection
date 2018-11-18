@@ -7,8 +7,9 @@
  */
 require_once __DIR__."/../inc/global.php";
 
-$id = $_POST['input'];
-$sql = "select * from `user` where `id`={$id}";
+$bh = $_POST['input'];
+$sql = "select * from `tab_user` where `bh`={$bh}";
 $db = Db::init('injection');
 $result = $db->fetchRows($sql);
+
 ajaxCallback(1,'test',$result);

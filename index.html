@@ -5,34 +5,26 @@
     <title>SQL注入测试平台</title>
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <script>
-        console.log('test');
         $(document).ready(function(){
             $("#button").click(function(){
+                $("pre").remove();
                 var content = $("#input").val();
-                console.log(content);
                 $.post("post.php",{
                         input:content,
-                    },
+                    },		
                     function(data,status){
                         if (status != 'success') {
                             alert("请求失败请重试");
                         } else {
                             var resutl = data['data'];
-                            console.log(resutl.length);
                             for (var i = 0 ;i < resutl.length;i ++) {
-                                console.log(resutl[i]);
-                                var str = "<pre>ID: " + resutl[i]['id'] + "<br />NAME: " + resutl[i]['name'] + "<br />PW: " + resutl[i]['password'] + "</pre>";
+                                var str = "<pre style='color:red;font-size:20px;'>BH: " + resutl[i]['id'] + "<br />NAME: " + resutl[i]['name'] + "<br />PW: " + resutl[i]['password'] + "</pre>";
                                 $("#pre").append(str);
                             }
-                            console.log(data['data']);
                         }
                     });
             });
